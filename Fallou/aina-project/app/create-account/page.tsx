@@ -25,17 +25,16 @@ const formSchema = z.object({
   lastName: z.string().min(2, {
     message: "Lastname must be at least 2 characters.",
   }),
-  email: z.string().min(2, {
-    message: "Email must be at least 2 characters.",
-  }),
+  email: z.string().email({message:"Must be an email"}),
   password: z.string().min(2, {
     message: "Password must be at least 2 characters.",
   }),
   confirmPassword: z.string().min(2, {
     message: "Password must be at least 2 characters.",
   }),
-  numberPermis: z.string().min(2, {
-    message: "Number permis must be at least 2 characters.",
+  numberPermis: z.coerce.number({
+    required_error: "Number permis is required",
+    invalid_type_error: "Number permis must be a number",
   }),
 });
 
@@ -48,7 +47,7 @@ export default function CreateAccount() {
       email: "",
       password: "",
       confirmPassword: "",
-      numberPermis: "",
+      numberPermis:0
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -76,7 +75,13 @@ export default function CreateAccount() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Number Permis" {...field} />
+                        <Input
+                          placeholder="Number Permis"
+                          {...field}
+                          required
+                          type="number"
+                          onChange={(e) => field.onChange(e.target.valueAsNumber || "")} 
+                        />
                       </FormControl>
 
                       <FormMessage />
@@ -128,7 +133,7 @@ export default function CreateAccount() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="password" {...field} />
+                        <Input placeholder="password" {...field} type="password" />
                       </FormControl>
 
                       <FormMessage />
@@ -141,7 +146,7 @@ export default function CreateAccount() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Confirm Password" {...field} />
+                        <Input placeholder="Confirm Password" {...field} type="password"/>
                       </FormControl>
 
                       <FormMessage />
