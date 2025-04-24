@@ -11,6 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
 
 type Patient = {
   id: string;
@@ -77,6 +78,10 @@ export default function PatientsPage() {
       setPatients((prev) => prev.filter((p) => p.id !== id))
     }
   }
+  const router = useRouter()
+  function handleClick() {
+    router.push("/beneficiary-list/1")
+  }
 
   return (
     <div className="p-6 space-y-4">
@@ -107,7 +112,7 @@ export default function PatientsPage() {
             </TableHeader>
             <TableBody>
               {filteredPatients.map((patient) => (
-                <TableRow key={patient.id}>
+                <TableRow key={patient.id} onClick={handleClick}>
                   <TableCell>{patient.nom}</TableCell>
                   <TableCell>{patient.prenom}</TableCell>
                   <TableCell>{patient.email}</TableCell>
